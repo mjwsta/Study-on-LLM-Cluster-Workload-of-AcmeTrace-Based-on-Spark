@@ -1,0 +1,29 @@
+version: '2'
+services:
+  spark-master:
+    image: spark353
+    container_name: spark-master
+    user: root
+    environment:
+      - SPARK_MODE=master
+      - SPARK_MASTER_PORT=7077
+      - SPARK_MASTER_WEBUI_PORT=8080
+    ports:
+      - "2222:22"
+      - "7077:7077"
+      - "8080:8080"
+      
+  spark-worker:
+    image: spark353
+    user: root
+    depends_on:
+      - spark-master
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER=spark://spark-master:7077
+      - SPARK_WORKER_MEMORY=8G
+      # - SPARK_WORKER_PORT=8881
+      # - SPARK_WORKER_WEBUI_PORT=8081
+    # ports:
+      # - "8881:8881"
+      # - "8081:8081"
